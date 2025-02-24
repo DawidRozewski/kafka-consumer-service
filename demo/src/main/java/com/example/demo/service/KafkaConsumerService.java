@@ -30,7 +30,4 @@ public class KafkaConsumerService {
         return messageRepository.findAll();
     }
 
-    public String getStatus() {
-        return "Consumer Service is running!";
-    }
 }

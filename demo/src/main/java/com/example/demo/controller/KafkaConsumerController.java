@@ -23,18 +23,13 @@ public class KafkaConsumerController {
         return kafkaConsumerService.getMessages();
     }
 
-    @GetMapping("/status")
-    public String getStatus() {
-        return kafkaConsumerService.getStatus();
-    }
-
     @GetMapping("/user")
-    public String helloUser() {
-        return "Kafka-Consumer-Service: Hello User";
+    public String userAccess() {
+        return "Kafka-Consumer-Service: Access granted for user!";
     }
 
     @GetMapping("/admin")
     public String helloAdmin() {
-        return "Kafka-Consumer-Service: Hello admin";
+        return "Kafka-Consumer-Service: Access granted for admin!";
     }
 }

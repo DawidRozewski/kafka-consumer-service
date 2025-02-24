@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Message;
 import com.example.demo.service.KafkaConsumerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ public class KafkaConsumerController {
     private final KafkaConsumerService kafkaConsumerService;
 
     @GetMapping("/messages")
-    public List<String> getReceivedMessages() {
+    public List<Message> getReceivedMessages() {
         return kafkaConsumerService.getMessages();
     }
 

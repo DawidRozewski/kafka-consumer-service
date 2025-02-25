@@ -21,18 +21,19 @@ public class KafkaConsumerController {
 
     @GetMapping("/messages")
     public List<Message> getReceivedMessages() {
+        log.info("Receiving messages from Kafka");
         return kafkaConsumerService.getMessages();
     }
 
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER')")
-    public String userAccess() {
-        return "Kafka-Consumer-Service: Access granted for user!";
+    public void userAccess() {
+        log.info("Kafka-Consumer-Service: Access granted for user!");
     }
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public String helloAdmin() {
-        return "Kafka-Consumer-Service: Access granted for admin!";
+    public void helloAdmin() {
+        log.info("Kafka-Consumer-Service: Access granted for admin!");
     }
 }

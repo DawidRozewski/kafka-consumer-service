@@ -20,11 +20,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/consumer/messages").permitAll()
-                        .requestMatchers("/consumer/admin").hasRole("ADMIN")
-                        .requestMatchers("/consumer/user").hasRole("USER")
                         .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(
-                        jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
 
         return httpSecurity.build();
     }

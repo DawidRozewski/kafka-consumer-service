@@ -22,11 +22,8 @@ class KafkaConsumerControllerTest extends AbstractMongoDBTestContainer {
     @Autowired
     private MessageRepository messageRepository;
 
-
     @BeforeEach
     public void setUp() {
-//        messageRepository.deleteAll();
-
         messageRepository.insert(new Message("content-message"));
         messageRepository.insert(new Message("content-message-1"));
     }

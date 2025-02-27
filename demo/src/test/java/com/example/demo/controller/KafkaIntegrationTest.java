@@ -1,17 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.AbstractMongoDBTestContainer;
-import com.example.demo.service.KafkaConsumerService;
 import com.example.demo.model.Message;
 import com.example.demo.repository.MessageRepository;
+import com.example.demo.service.KafkaConsumerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.org.awaitility.Awaitility;
 
@@ -22,10 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
 @EmbeddedKafka(partitions = 1, topics = {"test-topic"})
-@DirtiesContext
 class KafkaIntegrationTest extends AbstractMongoDBTestContainer {
 
     @Autowired
@@ -49,15 +43,15 @@ class KafkaIntegrationTest extends AbstractMongoDBTestContainer {
 
     @Test
     void shouldReturnMessages_whenMessagesAreConsumed() throws Exception {
-        //Given
+        // Given
         String testMessage = "Hello from Kafka!";
-        kafkaTemplate.send("test-topic", testMessage);
+        kafkaTemplate.send("test-topic", testMessage).get();
 
-        //When
+        // When
         mockMvc.perform(get(MESSAGES_ENDPOINT))
                 .andExpect(status().isOk());
 
-        //Then
+        // Then
         Awaitility.await()
                 .atMost(10, TimeUnit.SECONDS)
                 .untilAsserted(() -> {
@@ -69,11 +63,11 @@ class KafkaIntegrationTest extends AbstractMongoDBTestContainer {
 
     @Test
     void shouldReturnEmptyList_whenNoMessagesAreConsumed() throws Exception {
-        //When
+        // When
         mockMvc.perform(get(MESSAGES_ENDPOINT))
                 .andExpect(status().isOk());
 
-        //Then
+        // Then
         List<Message> messages = kafkaConsumerService.getMessages();
         assertThat(messages).isEmpty();
     }

@@ -20,7 +20,8 @@ public class KafkaConsumerService {
     @KafkaListener(topics = "test-topic", groupId = "consumer-group-1")
     public void consumeMessage(ConsumerRecord<String, String> record) {
         log.info("Received message: {} from partition: {}", record.value(), record.partition());
-        messageRepository.save(new Message(record.value()));
+        String content = record.value();
+        messageRepository.save(new Message(content));
     }
 
     public List<Message> getMessages() {

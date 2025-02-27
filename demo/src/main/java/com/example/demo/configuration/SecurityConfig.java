@@ -14,16 +14,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final JwtConverter jwtConverter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/consumer/messages").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)));
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter())));
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public JwtConverter jwtConverter() {
+        return new JwtConverter(new KeycloakRoleConverter());
     }
 }

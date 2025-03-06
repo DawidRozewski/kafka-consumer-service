@@ -1,9 +1,13 @@
 spring:
+  application:
+    name: kafka-consumer-service
+  cloud:
+    config:
+      enabled: false
   data:
     mongodb:
       host: localhost
       port: 27017
-
     kafka:
     bootstrap-servers: ${spring.embedded.kafka.brokers}
     consumer:
@@ -15,7 +19,6 @@ spring:
       schema.registry.url: mock://test
       key.serializer: org.apache.kafka.common.serialization.StringSerializer
       value.serializer: org.apache.kafka.common.serialization.StringSerializer
-
 
 eureka:
   client:

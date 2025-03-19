@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.org.awaitility.Awaitility;
 
 import java.util.List;
@@ -22,8 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @EmbeddedKafka(partitions = 1, topics = {"test-topic"})
 class KafkaIntegrationTest extends AbstractMongoDBTestContainer {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private static final String MESSAGES_ENDPOINT = "/consumer/messages";
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
@@ -34,7 +32,6 @@ class KafkaIntegrationTest extends AbstractMongoDBTestContainer {
     @Autowired
     private MessageRepository messageRepository;
 
-    private static final String MESSAGES_ENDPOINT = "/consumer/messages";
 
     @BeforeEach
     void setUp() {
@@ -57,7 +54,7 @@ class KafkaIntegrationTest extends AbstractMongoDBTestContainer {
                 .untilAsserted(() -> {
                     List<Message> messages = kafkaConsumerService.getMessages();
                     assertThat(messages).isNotEmpty();
-                    assertThat(messages.get(0).getContent()).isEqualTo(testMessage);
+                    assertThat(messages.getFirst().getContent()).isEqualTo(testMessage);
                 });
     }
 

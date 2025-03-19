@@ -4,6 +4,7 @@ import com.example.demo.model.Message;
 import com.example.demo.service.KafkaConsumerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +28,13 @@ public class KafkaConsumerController {
 
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER')")
-    public void userAccess() {
-        log.info("Kafka-Consumer-Service: Access granted for user!");
+    public ResponseEntity<String> userAccess() {
+        return ResponseEntity.ok("Kafka-Consumer-Service: Access granted for user!");
     }
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public void helloAdmin() {
-        log.info("Kafka-Consumer-Service: Access granted for admin!");
+    public ResponseEntity<String> adminAccess() {
+        return ResponseEntity.ok("Kafka-Consumer-Service: Access granted for admin!");
     }
 }

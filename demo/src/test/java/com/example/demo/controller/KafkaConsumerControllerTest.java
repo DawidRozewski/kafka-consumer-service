@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class KafkaConsumerControllerTest extends AbstractMongoDBTestContainer {
@@ -19,28 +20,29 @@ class KafkaConsumerControllerTest extends AbstractMongoDBTestContainer {
     @Autowired
     private KafkaConsumerService kafkaConsumerService;
 
-    @Autowired
-    private MessageRepository messageRepository;
-
-    @BeforeEach
-    public void setUp() {
-        messageRepository.insert(new Message("content-message"));
-        messageRepository.insert(new Message("content-message-1"));
-    }
+//    @Autowired
+//    private MessageRepository messageRepository;
+//
+//    @BeforeEach
+//    public void setUp() {
+//        messageRepository.insert(new Message("content-message"));
+//        messageRepository.insert(new Message("content-message-1"));
+//    }
 
     @Test
     @WithMockUser(roles = "USER")
     void givenUserWithUserRole_whenAccessingUserEndpoint_thenShouldGrantAccess() throws Exception {
         mockMvc.perform(get(USER_ACCESS_ENDPOINT))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().string("Kafka-Consumer-Service: Access granted for user!"));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void givenUserWithAdminRole_whenAccessingAdminEndpoint_thenShouldGrantAccess() throws Exception {
         mockMvc.perform(get(ADMIN_ACCESS_ENDPOINT))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andExpect(content().string("Kafka-Consumer-Service: Access granted for admin!"));
     }
 
     @Test

@@ -55,7 +55,7 @@ class KafkaConsumerServiceTest {
         // Then
         assertNotNull(messages);
         assertEquals(2, messages.size());
-        assertEquals(KAFKA_MESSAGE, messages.get(0).getContent());
+        assertEquals(KAFKA_MESSAGE, messages.getFirst().getContent());
         assertEquals(secondKafkaMessage, messages.get(1).getContent());
     }
 }
